@@ -16,39 +16,50 @@
 <h1 class="text-4xl text-gray-100 pt-10 py-20 px-20 font-display">riigg</h1>
 -->
 
-<div class="fixed top-0 w-full z-10 flex justify-center gap-x-20 items-center bg-gray-700 py-4 shadow-xl">
+<div
+	class="fixed top-0 w-full z-10 flex justify-center gap-x-20 items-center bg-gray-700 py-4 shadow-xl text-gray-400"
+>
 	<button
 		on:click={() => {
 			listMode = 'cpu';
 		}}
 		class={`
-			px-10 py-8 rounded-md border-8 flex justify-center items-center
-			${selectedCpu ? "bg-gray-800 text-cyan-500 border-solid  border-cyan-500" : "bg-gray-600 text-gray-400 border-dashed border-gray-400"}
+			px-8 py-4 rounded-md border-4 flex justify-center items-center
+			${
+				selectedCpu
+					? 'bg-gray-800 text-cyan-500 border-solid  border-cyan-500'
+					: 'bg-gray-600 text-gray-400 border-dashed border-gray-400'
+			}
 			hover:bg-cyan-400 hover:border-cyan-400 hover:text-cyan-900 
 			hover:transform hover:-translate-y-2 hover:shadow-lg
 			transition-all duration-300 ease-in-out`}
 	>
-		<div class="font-bold text-4xl">{displayCpu}</div>
+		<div class="font-bold text-2xl">{displayCpu}</div>
 	</button>
-	<div class="font-display text-gray-400 text-6xl">+</div>
+	<div class:text-cyan-500={selectedCpu && selectedGpu} class="select-none font-display text-6xl">
+		+
+	</div>
 	<button
 		on:click={() => {
 			listMode = 'gpu';
 		}}
 		class={`
-			px-16 py-8 rounded-md border-8 flex justify-center items-center
-			${selectedGpu ? "bg-gray-800 text-cyan-500 border-solid  border-cyan-500" : "bg-gray-600 text-gray-400 border-dashed border-gray-400"}
+			px-8 py-4 rounded-md border-4 flex justify-center items-center
+			${
+				selectedGpu
+					? 'bg-gray-800 text-cyan-500 border-solid  border-cyan-500'
+					: 'bg-gray-600 text-gray-400 border-dashed border-gray-400'
+			}
 			hover:bg-cyan-400 hover:border-cyan-400 hover:text-cyan-900 
 			hover:transform hover:-translate-y-2 hover:shadow-lg
 			transition-all duration-300 ease-in-out`}
 	>
-	
-		<div class="font-bold text-4xl">{displayGpu}</div>
+		<div class="font-bold text-2xl">{displayGpu}</div>
 	</button>
 </div>
 
 {#if listMode === 'cpu'}
-	<div class="text-gray-200 flex mx-12 mt-52 flex-wrap gap-x-24 gap-y-10 justify-center">
+	<div class="text-gray-200 flex mx-12 mt-40 flex-wrap gap-x-24 gap-y-10 justify-center">
 		{#each cpus as cpu}
 			<Card
 				handleSelect={() => (selectedCpu = cpu)}
@@ -66,7 +77,7 @@
 		{/each}
 	</div>
 {:else if listMode === 'gpu'}
-	<div class="text-gray-200 flex mx-12 mt-20 flex-wrap gap-x-24 gap-y-10 justify-center">
+	<div class="text-gray-200 flex mx-12 mt-40 flex-wrap gap-x-24 gap-y-10 justify-center">
 		{#each gpus as gpu}
 			<Card
 				handleSelect={() => (selectedGpu = gpu)}
