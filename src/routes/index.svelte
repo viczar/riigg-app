@@ -2,9 +2,54 @@
 	import Card from '$lib/card.svelte';
 	import cpus from '$lib/data/cpus.js';
 	import gpus from '$lib/data/gpus.js';
+	import lunr from 'lunr';
+	import _ from 'lodash';
+
+	let cpuIdx = lunr(function () {
+		this.ref('id');
+		this.field('name');
+		this.field('manufacturer');
+		this.field('architecture');
+
+		cpus.forEach(function (cpu) {
+			this.add(cpu);
+		}, this);
+	});
+
+	let gpuIdx = lunr(function () {
+		this.ref('id');
+		this.field('name');
+		this.field('manufacturer');
+
+		gpus.forEach(function (gpu) {
+			this.add(gpu);
+		}, this);
+	});
 
 	let selectedCpu;
 	let selectedGpu;
+
+	let searchCpu = '';
+	let searchGpu = '';
+
+	$: cpuList =
+		searchCpu === ''
+			? cpus
+			: cpus.filter((cpu) =>
+					cpuIdx
+						.search(searchCpu)
+						.map((i) => i.ref)
+						.includes(String(cpu.id))
+			  );
+	$: gpuList =
+		searchGpu === ''
+			? gpus
+			: gpus.filter((gpu) =>
+					gpuIdx
+						.search(searchGpu)
+						.map((i) => i.ref)
+						.includes(String(gpu.id))
+			  );
 
 	let listMode = 'cpu';
 
@@ -12,19 +57,15 @@
 	$: displayGpu = selectedGpu ? selectedGpu.name : 'Select GPU';
 </script>
 
-<!---
-<h1 class="text-4xl text-gray-100 pt-10 py-20 px-20 font-display">riigg</h1>
--->
-
 <div
-	class="fixed top-0 w-full z-10 flex justify-center gap-x-20 items-center bg-gray-700 py-4 shadow-xl text-gray-400"
+	class="fixed top-0 w-full z-10 flex justify-center gap-x-10 items-center bg-gray-700 py-4 shadow-lg text-gray-400"
 >
 	<button
 		on:click={() => {
 			listMode = 'cpu';
 		}}
 		class={`
-			px-8 py-4 rounded-md border-4 flex justify-center items-center
+			px-4 py-2 rounded-md border-4 flex justify-center items-center
 			${
 				selectedCpu
 					? 'bg-gray-800 text-cyan-500 border-solid  border-cyan-500'
@@ -34,9 +75,9 @@
 			hover:transform hover:-translate-y-2 hover:shadow-lg
 			transition-all duration-300 ease-in-out`}
 	>
-		<div class="font-bold text-2xl">{displayCpu}</div>
+		<div class="font-bold text-xl">{displayCpu}</div>
 	</button>
-	<div class:text-cyan-500={selectedCpu && selectedGpu} class="select-none font-display text-6xl">
+	<div class:text-cyan-500={selectedCpu && selectedGpu} class="select-none font-display text-2xl">
 		+
 	</div>
 	<button
@@ -44,7 +85,7 @@
 			listMode = 'gpu';
 		}}
 		class={`
-			px-8 py-4 rounded-md border-4 flex justify-center items-center
+			px-4 py-2 rounded-md border-4 flex justify-center items-center
 			${
 				selectedGpu
 					? 'bg-gray-800 text-cyan-500 border-solid  border-cyan-500'
@@ -54,13 +95,20 @@
 			hover:transform hover:-translate-y-2 hover:shadow-lg
 			transition-all duration-300 ease-in-out`}
 	>
-		<div class="font-bold text-2xl">{displayGpu}</div>
+		<div class="font-bold text-xl">{displayGpu}</div>
 	</button>
 </div>
 
 {#if listMode === 'cpu'}
-	<div class="text-gray-200 flex mx-12 mt-40 flex-wrap gap-x-24 gap-y-10 justify-center">
-		{#each cpus as cpu}
+	<div class="flex justify-center mt-32">
+		<input
+			bind:value={searchCpu}
+			class="p-2 rounded-lg text-base bg-gray-900 border-gray-400 border-4 text-gray-100 focus:outline-none focus:ring-4 focus:ring-cyan-300 focus:border-gray-900"
+			placeholder="Search for cpus..."
+		/>
+	</div>
+	<div class="text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
+		{#each cpuList as cpu}
 			<Card
 				handleSelect={() => (selectedCpu = cpu)}
 				name={cpu.name}
@@ -77,8 +125,16 @@
 		{/each}
 	</div>
 {:else if listMode === 'gpu'}
-	<div class="text-gray-200 flex mx-12 mt-40 flex-wrap gap-x-24 gap-y-10 justify-center">
-		{#each gpus as gpu}
+	<div class="flex justify-center mt-32">
+		<input
+			bind:value={searchGpu}
+			class="p-2 rounded-lg text-base bg-gray-900 border-gray-400 border-4 text-gray-100 focus:outline-none focus:ring-4 focus:ring-cyan-300 focus:border-gray-900"
+			placeholder="Search for gpus..."
+		/>
+	</div>
+
+	<div class="text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
+		{#each gpuList as gpu}
 			<Card
 				handleSelect={() => (selectedGpu = gpu)}
 				name={gpu.name}
