@@ -1,23 +1,21 @@
 const colors = require('tailwindcss/colors');
 
 const config = {
-	mode: "jit",
-	purge: [
-		"./src/**/*.{html,js,svelte,ts}",
-	],
+	mode: 'jit',
+	purge: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
 			fontFamily: {
-				'display': ['MuseoModerno']
+				display: ['MuseoModerno']
+			},
+			colors: {
+				cyan: colors.cyan,
+				gray: colors.blueGray,
+				emerald: colors.emerald
 			}
-		},
-		colors: {
-			cyan: colors.cyan,
-			gray: colors.blueGray,
-			emerald: colors.emerald,
 		}
 	},
-	plugins: [],
+	plugins: []
 };
 
 module.exports = config;
