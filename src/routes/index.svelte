@@ -102,10 +102,10 @@
 	</button>
 </div>
 
-<div class="text-gray-200 pt-32 px-4 fixed left-0 w-96">
+<div class="text-gray-200 pt-32 px-4 fixed left-2 w-96 flex flex-col gap-8">
 	<div>
-		<div>The Witcher 3</div>
-		<div class="flex">
+		<div class="mb-2 text-lg">The Witcher 3</div>
+		<div class="flex gap-4">
 			<img src="/images/the_witcher_3_285x380.jpg" alt="" class="object-fill w-24" />
 			<div>
 				<div class="text-lg">High: <span class="text-2xl font-medium">60</span></div>
@@ -115,13 +115,13 @@
 		</div>
 	</div>
 	<div>
-		<div>GTA V</div>
-		<div class="flex">
+		<div class="mb-2 text-lg">GTA V</div>
+		<div class="flex gap-4">
 			<img src="/images/grand_theft_auto_V_285x380.jpg" alt="" class="object-fill w-24" />
 			<div>
-				<div>Ultra: <span>60</span></div>
-				<div>High: <span>60</span></div>
-				<div>Low: <span>60</span></div>
+				<div class="text-lg">High: <span class="text-2xl font-medium">60</span></div>
+				<div class="text-lg">Medium: <span class="text-2xl font-medium">60</span></div>
+				<div class="text-lg">Low: <span class="text-2xl font-medium">60</span></div>
 			</div>
 		</div>
 	</div>
@@ -137,7 +137,7 @@
 			/>
 		</div>
 
-		<div class="ml-48 text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
+		<div class="ml-60 text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
 			{#each cpuList as cpu}
 				<Card
 					handleSelect={() => (selectedCpu = cpu)}
@@ -163,7 +163,7 @@
 			/>
 		</div>
 
-		<div class="text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
+		<div class="ml-60 text-gray-200 flex mx-12 mt-10 flex-wrap gap-x-24 gap-y-10 justify-center">
 			{#each gpuList as gpu}
 				<Card
 					handleSelect={() => (selectedGpu = gpu)}
